@@ -38,17 +38,17 @@ X_test_scaled = scaler.transform(X_test)
 
 # 5. TRAINING MODEL
 
-# --- KNN ---
+# K-Nearest Neighbor
 knn = KNeighborsClassifier(n_neighbors=5)
 knn.fit(X_train_scaled, y_train)
 knn_pred = knn.predict(X_test_scaled)
 
-# --- Decision Tree ---
+# Decision Tree
 dt = DecisionTreeClassifier(random_state=42)
 dt.fit(X_train, y_train)
 dt_pred = dt.predict(X_test)
 
-# --- Random Forest ---
+# Random Forest
 rf = RandomForestClassifier(
     n_estimators=200,
     random_state=42
