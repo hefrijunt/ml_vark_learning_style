@@ -1,4 +1,4 @@
-# Machine Learning - VARK Learning Style Classification API
+# Machine Learning - VARK Learning Style Classification API Version 2
 
 REST API untuk mengklasifikasikan gaya belajar mahasiswa berdasarkan model
 VARK (Visual, Auditory, Read/Write, Kinesthetic) menggunakan Machine Learning
