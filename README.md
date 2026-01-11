@@ -168,5 +168,6 @@ Penelitian / Tesis Klasifikasi Gaya Belajar Mahasiswa
 
 ## Referensi
 Fleming, N. D., & Mills, C. (1992). Not Another Inventory, Rather a Catalyst for Reflection.
-FastAPI Documentation: https://fastapi.tiangolo.com
-Scikit-Learn Documentation: https://scikit-learn.org
+FastAPI Documentation: https://fastapi.tiangolo.com .
+Scikit-Learn Documentation: https://scikit-learn.org .
+Dataset from Kaggle - Student Learning Preferences https://www.kaggle.com/datasets/ebouearmand59/student-learning-preferences .
