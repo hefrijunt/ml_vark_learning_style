@@ -5,8 +5,6 @@ venv/
 __pycache__/
 *.pyc
 
-# Model files
-model/*.pkl
 
 # OS files
 .DS_Store
