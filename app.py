@@ -63,28 +63,28 @@ try:
         scaler = joblib.load('model/scaler.pkl')
         label_encoder = joblib.load('model/label_encoder.pkl')
         feature_columns = joblib.load('model/feature_columns.pkl')
-        print(f"✅ Model loaded successfully from {model_path}")
-        print(f"✅ Expected features: {feature_columns}")
+        print(f"Model loaded successfully from {model_path}")
+        print(f"Expected features: {feature_columns}")
         model_loaded = True
     else:
-        print(f"⚠️  Model file not found: {model_path}")
-        print("⚠️  Please run train_vark_model.py first to generate model files")
-        print("⚠️  Prediction endpoint will return 503 Service Unavailable")
+        print(f"Model file not found: {model_path}")
+        print("Please run train_vark_model.py first to generate model files")
+        print("Prediction endpoint will return 503 Service Unavailable")
         model = None
         scaler = None
         label_encoder = None
         feature_columns = None
 except FileNotFoundError as e:
-    print(f"❌ Error loading model: {e}")
-    print("⚠️  Please run train_vark_model.py first to generate model files")
-    print("⚠️  Prediction endpoint will return 503 Service Unavailable")
+    print(f"Error loading model: {e}")
+    print("Please run train_vark_model.py first to generate model files")
+    print("Prediction endpoint will return 503 Service Unavailable")
     model = None
     scaler = None
     label_encoder = None
     feature_columns = None
 except Exception as e:
-    print(f"❌ Unexpected error loading model: {e}")
-    print("⚠️  Prediction endpoint will return 503 Service Unavailable")
+    print(f"Unexpected error loading model: {e}")
+    print("Prediction endpoint will return 503 Service Unavailable")
     model = None
     scaler = None
     label_encoder = None

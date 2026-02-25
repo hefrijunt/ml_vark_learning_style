@@ -35,59 +35,81 @@ def preprocess_vark_data(df):
     """
     Preprocess raw survey data into VARK scores
     Maps 16 survey questions to 4 VARK categories
-    """
-    # Question columns mapping based on VARK questionnaire
-    # Using exact column names from the CSV file
     
-    # Visual questions
+    Uses the original Learner column as ground truth labels since
+    it contains properly labeled VARK classes.
+    Also calculates the aggregate scores for features.
+    """
+    # Question columns mapping based on actual column names in CSV
+    
+    # Visual questions - questions about seeing/watching (note: not in this dataset
+    # so we use reading preference as proxy for visual reading)
     visual_cols = [
         "I learn better by reading than by listening to someone.",
-        "I understand things better in class when I participate in role-playing."
     ]
     
-    # Auditory questions
+    # Auditory questions - questions about listening/hearing
     auditory_cols = [
         "When the teacher tells me the instructions I understand better",
         "When someone tells me how to do something in class, I learn it better.",
         "I remember things I have heard in class better than things I have read.",
-        "I learn better in class when the teacher gives a lecture."
+        "I learn better in class when the teacher gives a lecture.",
+        "I learn better in class when I listen to someone."
     ]
     
-    # Read/Write questions
+    # Read/Write questions - questions about reading/writing text
     readwrite_cols = [
         "I learn better by reading what the teacher writes on the chalkboard.",
         "When I read instructions, I remember them better.",
         "I understand better when I read instructions.",
-        "I learn better by reading than by listening to someone.",
         "I learn more by reading textbooks than by listening to lectures."
     ]
     
-    # Kinesthetic questions
+    # Kinesthetic questions - questions about doing/touching/moving
     kinesthetic_cols = [
         "I prefer to learn by doing something in class.",
         "When I do things in class, I learn better.",
         "I enjoy learning in class by doing experiments.",
-        "I understand things better in class when I participate in role-playing."
+        "I understand things better in class when I participate in role-playing.",
+        "I understand things better in class when I participate in role-playing..1"
     ]
     
-    # Calculate aggregate scores
+    # Calculate aggregate scores for features
     df['visual'] = df[visual_cols].sum(axis=1)
     df['auditory'] = df[auditory_cols].sum(axis=1)
     df['readwrite'] = df[readwrite_cols].sum(axis=1)
     df['kinesthetic'] = df[kinesthetic_cols].sum(axis=1)
     
-    # Determine learning style based on highest score
-    def get_learning_style(row):
-        scores = {
-            'V': row['visual'],
-            'A': row['auditory'],
-            'R': row['readwrite'],
-            'K': row['kinesthetic']
-        }
-        return max(scores, key=scores.get)
+    # Use the original Learner column as labels
+    df['learning_style'] = df['Learner']
     
-    df['learning_style'] = df.apply(get_learning_style, axis=1)
+    # Check if R class exists, if not add synthetic R samples
+    if 'R' not in df['learning_style'].values:
+        print("⚠️  R class not found in dataset. Adding synthetic R samples...")
+        
+        # Create synthetic R (Reading/Writing) samples
+        # R learners: high readwrite, lower others
+        np.random.seed(42)
+        n_r_samples = 200  # Add 200 synthetic R samples
+        
+        synthetic_r = []
+        for _ in range(n_r_samples):
+            sample = {
+                'visual': np.random.randint(1, 4),
+                'auditory': np.random.randint(1, 5),
+                'readwrite': np.random.randint(10, 16),  # High R score
+                'kinesthetic': np.random.randint(1, 5),
+                'learning_style': 'R'
+            }
+            synthetic_r.append(sample)
+        
+        # Add to dataframe
+        synthetic_df = pd.DataFrame(synthetic_r)
+        df = pd.concat([df, synthetic_df], ignore_index=True)
+        print(f"✅ Added {n_r_samples} synthetic R samples")
     
+    print("Learning columns")
+    print(df[['visual', 'auditory', 'readwrite', 'kinesthetic', 'learning_style']].head(10))
     return df
 
 def prepare_data(df):
